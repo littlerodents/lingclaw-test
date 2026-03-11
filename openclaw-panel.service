@@ -1,0 +1,26 @@
+[Unit]
+Description=OpenClaw Management Panel
+Documentation=https://openclaw.ai
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/openclaw-panel/backend
+ExecStart=/usr/bin/env npx tsx src/server.ts
+Environment=NODE_ENV=production
+Environment=OPENCLAW_PANEL_HOST=0.0.0.0
+Environment=OPENCLAW_PANEL_PORT=3187
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=openclaw-panel
+
+# Hardening
+NoNewPrivileges=false
+ProtectSystem=false
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
