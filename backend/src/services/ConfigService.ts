@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import os from "node:os";
+import crypto from "node:crypto";
 import type {
   SetupState,
   OpenClawConfig,
@@ -145,14 +146,7 @@ function maskSensitive(value: string): string {
 }
 
 function generateToken(length = 32): string {
-  const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-  let result = "";
-  const bytes = new Uint8Array(length);
-  crypto.getRandomValues(bytes);
-  for (const b of bytes) {
-    result += chars[b % chars.length];
-  }
-  return result;
+  return crypto.randomBytes(length).toString("base64url").slice(0, length);
 }
 
 function resolveBaseUrl(provider: string): string {
